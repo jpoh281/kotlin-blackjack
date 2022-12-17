@@ -1,4 +1,4 @@
-package blackjack
+package blackjack.domain
 
 class Deck(
     cards: List<Card> = Suit.Spade.makeSuitSet() + Suit.Diamond.makeSuitSet() + Suit.Heart.makeSuitSet() + Suit.Club.makeSuitSet()

@@ -1,4 +1,4 @@
-package blackjack
+package blackjack.domain
 
 enum class Suit(val character: String) {
     Spade(character = "스페이드") {

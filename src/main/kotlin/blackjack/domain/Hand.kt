@@ -1,4 +1,4 @@
-package blackjack
+package blackjack.domain
 
 private const val MAX_HAND_VALUE = 21
 
@@ -13,7 +13,7 @@ class Hand(cards: List<Card> = emptyList()) {
         get() = calculateValue()
 
     val isBust: Boolean
-        get() = value > 21
+        get() = value > MAX_HAND_VALUE
 
     private fun calculateValue(): Int {
         var score = 0

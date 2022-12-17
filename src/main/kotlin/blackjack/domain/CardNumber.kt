@@ -1,4 +1,4 @@
-package blackjack
+package blackjack.domain
 
 private val NUMBER_RANGE = IntRange(2, 10)
 private val FACE_RANGE = IntRange(11, 13)

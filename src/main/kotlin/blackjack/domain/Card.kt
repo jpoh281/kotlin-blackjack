@@ -1,4 +1,4 @@
-package blackjack
+package blackjack.domain
 
 private const val FACE_CARD_VALUE = 10
 private const val A_MIN_VALUE = 1
@@ -21,8 +21,8 @@ data class Card(val number: CardNumber, val suit: Suit = Suit.Spade) {
     }
 
     fun calculateValue(isGreaterThan10: Boolean, hasMoreAce: Boolean): Int {
-        if(isGreaterThan10) return A_MIN_VALUE
-        if(hasMoreAce) return A_MIN_VALUE
+        if (isGreaterThan10) return A_MIN_VALUE
+        if (hasMoreAce) return A_MIN_VALUE
         return A_MAX_VALUE
     }
 
