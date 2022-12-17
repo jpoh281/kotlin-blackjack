@@ -1,9 +1,8 @@
 package blackjack
 
-private val BASE_CARDS = IntRange(1, 13).map(::Card).toList()
-// private val BASE_CARDS = IntRange(1, 13).toList().toIntArray()
-
-class Deck(cards: List<Card> = BASE_CARDS + BASE_CARDS + BASE_CARDS + BASE_CARDS) {
+class Deck(
+    cards: List<Card> = Suit.Spade.makeSuitSet() + Suit.Diamond.makeSuitSet() + Suit.Heart.makeSuitSet() + Suit.Club.makeSuitSet()
+) {
 
     private val _cards = cards.toMutableList()
     val cards
