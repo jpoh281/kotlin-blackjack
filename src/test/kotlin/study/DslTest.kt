@@ -5,24 +5,8 @@ import io.kotest.matchers.maps.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
-/*
-introduce {
-  name("홍종표")
-  company("회사")
-  skills {
-    soft("A passion for problem solving")
-    soft("Good communication skills")
-    hard("Kotlin")
-  }
-  languages {
-    "Korean" level 5
-    "English" level 3
-  }
-}
- */
-
 class PersonBuilder {
-    private lateinit var name: String
+    private var name: String? = null
     private var company: String? = null
 
     private val skillsBuilder: SkillsBuilder = SkillsBuilder()
@@ -36,7 +20,6 @@ class PersonBuilder {
         company = value
     }
 
-
     fun skills(block: SkillsBuilder.() -> Unit) {
         skillsBuilder.apply(block)
     }
@@ -45,13 +28,17 @@ class PersonBuilder {
         languagesBuilder.apply(block)
     }
 
-
     fun build(): Person {
-        return Person(name, company, skillsBuilder.build(), languagesBuilder.build())
+        return Person(name ?: "홍길동", company ?: "백수", skillsBuilder.build(), languagesBuilder.build())
     }
 }
 
-data class Person(val name: String, val company: String?, val skills: List<Skill>, val languages: Map<String, Int>)
+data class Person(
+    val name: String,
+    val company: String,
+    val skills: List<Skill>,
+    val languages: Map<String, Int>
+)
 
 sealed class Skill
 data class Soft(val value: String) : Skill()
@@ -89,7 +76,6 @@ fun introduce(block: PersonBuilder.() -> Unit): Person {
     return PersonBuilder().apply(block).build()
 }
 
-
 class DslTest {
     @Test
     internal fun introduce() {
@@ -119,6 +105,34 @@ class DslTest {
             "Korean" to 5,
             "English" to 3
         )
+    }
 
+    @Test
+    internal fun `이름을 입력하지 않으면 홍길동으로 생성된다`() {
+        val person: Person = introduce {
+            company("회사")
+            skills {
+                soft("A passion for problem solving")
+                soft("Good communication skills")
+                hard("Kotlin")
+            }
+            languages {
+                "Korean" level 5
+                "English" level 3
+            }
+        }
+
+        person.name shouldBe "홍길동"
+        person.company shouldBe "회사"
+        person.skills shouldContainExactlyInAnyOrder listOf(
+            Soft("A passion for problem solving"),
+            Soft("Good communication skills"),
+            Hard("Kotlin")
+        )
+
+        person.languages shouldContainExactly mapOf(
+            "Korean" to 5,
+            "English" to 3
+        )
     }
 }
