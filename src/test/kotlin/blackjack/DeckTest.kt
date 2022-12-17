@@ -14,11 +14,6 @@ internal class DeckTest {
     }
 
     @Test
-    fun `덱에 13을 넘어서는 수를 가진 카드는 없다`() {
-        assertThat(Deck().cards.filter { it > 13 }.size).isEqualTo(0)
-    }
-
-    @Test
     fun `셔플을 통해 덱을 섞을 수 있다`() {
         val deck = Deck()
         assertThat(deck).isEqualTo(Deck())
