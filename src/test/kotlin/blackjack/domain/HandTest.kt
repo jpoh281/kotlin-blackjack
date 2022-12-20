@@ -2,13 +2,15 @@ package blackjack.domain
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+
 internal class HandTest {
 
     @Test
-    fun `처음 생성된 핸드는 빈 배열을 가지며 value = 0, isBust = false 이다`() {
+    fun `처음 생성된 핸드는 빈 배열을 가지며 value = 0, isMax = false 이다`() {
         val hand = Hand()
         assertThat(hand.cards).isEqualTo(emptyList<Card>())
-        assertThat(hand.isBust).isEqualTo(false)
+        assertThat(hand.isMax).isEqualTo(false)
         assertThat(hand.value).isEqualTo(0)
     }
 
@@ -37,8 +39,28 @@ internal class HandTest {
     }
 
     @Test
-    fun `21을 초과할 때 isBust = true이다`() {
+    fun `21 이상 때 isMax = true 이다`() {
         val hand = Hand(listOf(2.toCard(), 12.toCard(), 13.toCard()))
-        assertThat(hand.isBust).isEqualTo(true)
+        assertThat(hand.isMax).isEqualTo(true)
+    }
+
+    @Test
+    fun `isMax = false 일 때 카드를 더 가질 수 있다`() {
+        val hand = Hand(listOf(2.toCard(), 8.toCard()))
+        assertThat(hand.value).isEqualTo(10)
+
+        hand.add(1.toCard())
+        assertThat(hand.value).isEqualTo(21)
+    }
+
+    @Test
+    fun `isMax = true 일 때 카드를 더 가질 수 없다`() {
+        val hand = Hand(listOf(2.toCard(), 12.toCard(), 13.toCard()))
+
+        val exception = assertThrows<IllegalArgumentException> {
+            hand.add(1.toCard())
+        }
+
+        assertThat(exception.message).isEqualTo("21 이상인 경우 카드를 더 뽑을 수 없습니다")
     }
 }

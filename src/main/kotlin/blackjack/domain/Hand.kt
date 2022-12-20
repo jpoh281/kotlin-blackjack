@@ -12,8 +12,16 @@ class Hand(cards: List<Card> = emptyList()) {
     val value: Int
         get() = calculateValue()
 
-    val isBust: Boolean
-        get() = value > MAX_HAND_VALUE
+    val isMax: Boolean
+        get() = value >= MAX_HAND_VALUE
+
+    fun add(vararg cards: Card) {
+        require(!isMax) {
+            "21 이상인 경우 카드를 더 뽑을 수 없습니다"
+        }
+
+        _cards.addAll(cards)
+    }
 
     private fun calculateValue(): Int {
         var score = 0
